@@ -7,7 +7,9 @@ import com.micka.service.UserService;
 import com.micka.service.mapper.Mapper;
 import com.micka.utils.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserCrudRepository userCrudRepository;

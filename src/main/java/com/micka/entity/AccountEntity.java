@@ -65,4 +65,7 @@ public class AccountEntity {
         return user;
     }
 
+    public void setUser(UserEntity user) {
+        this.user = user;
+    }
 }

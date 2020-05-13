@@ -1,7 +1,6 @@
 package com.micka.service;
 
 import com.micka.dto.User;
-import java.util.List;
 
 public interface UserService {
 

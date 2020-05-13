@@ -2,9 +2,7 @@ package com.micka.service.impl;
 
 import com.micka.ObjectProvider;
 import com.micka.dto.Account;
-import com.micka.dto.User;
 import com.micka.entity.AccountEntity;
-import com.micka.entity.UserEntity;
 import com.micka.repository.AccountCrudRepository;
 import com.micka.service.mapper.impl.AccountMapper;
 import org.junit.jupiter.api.Assertions;
@@ -15,11 +13,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
@@ -59,17 +55,6 @@ class AccountServiceImplTest {
     void whenAccountServiceFindByIdNullThenThrowIllegalArgumentException(){
         Assertions.assertThrows(IllegalArgumentException.class, () -> accountService.findById(null));
         verifyNoInteractions(accountCrudRepository, accountMapper);
-    }
-
-    @Test
-    void whenAccountServiceSaveCorrectThenOK(){
-        when(accountMapper.mapDomainToEntity(any(Account.class))).thenReturn(ENTITY);
-        when(accountCrudRepository.save(any(AccountEntity.class))).thenReturn(ENTITY);
-
-        accountService.save(DOMAIN);
-
-        verify(accountMapper,times(1)).mapDomainToEntity(any(Account.class));
-        verify(accountCrudRepository,times(1)).save(any(AccountEntity.class));
     }
 
     @Test

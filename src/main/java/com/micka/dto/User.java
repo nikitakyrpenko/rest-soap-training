@@ -2,11 +2,11 @@ package com.micka.dto;
 
 public class User {
 
-    private final Integer id;
-    private final String firstName;
-    private final String lastName;
-    private final String email;
-    private final String password;
+    private Integer id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
 
     private User(Builder builder){
         this.id = builder.id;
@@ -16,6 +16,7 @@ public class User {
         this.password = builder.password;
     }
 
+    public User(){}
 
     public Integer getId() {
         return id;

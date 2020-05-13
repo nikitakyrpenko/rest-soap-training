@@ -3,9 +3,9 @@ package com.micka.dto;
 public class Account {
 
     private Integer id;
-    private final Integer balance;
-    private final Double charge;
-    private final Integer userId;
+    private Integer balance;
+    private Double charge;
+    private Integer userId;
 
     public Account(Integer id,Integer balance, Double charge, Integer userId) {
         this.id = id;
@@ -18,6 +18,9 @@ public class Account {
         this.balance = balance;
         this.charge = charge;
         this.userId = userId;
+    }
+
+    public Account() {
     }
 
     public Integer getId() {

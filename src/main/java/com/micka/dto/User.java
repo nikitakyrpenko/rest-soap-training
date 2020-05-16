@@ -1,11 +1,21 @@
 package com.micka.dto;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 public class User {
 
     private Integer id;
+
+    @Pattern(regexp="^[A-Za-z]*$",message = "Invalid firstName")
     private String firstName;
+
+    @Pattern(regexp="^[A-Za-z]*$",message = "Invalid lastName")
     private String lastName;
+
     private String email;
+
+    @Size(min = 2)
     private String password;
 
     private User(Builder builder){

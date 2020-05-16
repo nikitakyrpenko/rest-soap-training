@@ -29,6 +29,7 @@ public class UserMapper implements Mapper<User, UserEntity> {
                 .withLastName(userEntity.getLastName())
                 .withEmail(userEntity.getEmail())
                 .withPassword(userEntity.getPassword())
+                .withRole(userEntity.getRole())
                 .build();
     }
 
@@ -41,7 +42,8 @@ public class UserMapper implements Mapper<User, UserEntity> {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
-                passwordEncoder.encode(user.getPassword())
+                passwordEncoder.encode(user.getPassword()),
+                user.getRole()
         );
     }
 

@@ -1,5 +1,7 @@
 package com.micka.dto;
 
+import com.micka.utils.Role;
+
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -18,12 +20,15 @@ public class User {
     @Size(min = 2)
     private String password;
 
+    private Role role;
+
     private User(Builder builder){
         this.id = builder.id;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.email = builder.email;
         this.password = builder.password;
+        this.role = builder.role;
     }
 
     public User(){}
@@ -48,6 +53,10 @@ public class User {
         return password;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
     public static Builder builder(){
         return new Builder();
    }
@@ -69,6 +78,7 @@ public class User {
         private String lastName;
         private String email;
         private String password;
+        private Role role;
 
         public Builder withId(Integer id){
             this.id = id;
@@ -92,6 +102,11 @@ public class User {
 
         public Builder withPassword(String password){
             this.password = password;
+            return this;
+        }
+
+        public Builder withRole(Role role){
+            this.role = role;
             return this;
         }
 

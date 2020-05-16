@@ -2,6 +2,7 @@ package com.micka.service.impl;
 
 import com.micka.dto.User;
 import com.micka.entity.UserEntity;
+import com.micka.exception.RecordNotFoundException;
 import com.micka.repository.UserCrudRepository;
 import com.micka.service.UserService;
 import com.micka.service.mapper.Mapper;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
         return userCrudRepository.findById(id)
                 .map(mapper::mapEntityToDomain)
-                .orElseThrow();
+                .orElseThrow(() -> {throw new RecordNotFoundException("User with such id not found");});
     }
 
     @Override
@@ -37,7 +38,8 @@ public class UserServiceImpl implements UserService {
 
         UserEntity entity = mapper.mapDomainToEntity(user);
 
-        return userCrudRepository.save(entity)
+        return userCrudRepository
+                .save(entity)
                 .getId();
     }
 
@@ -47,7 +49,8 @@ public class UserServiceImpl implements UserService {
 
         UserEntity entity = mapper.mapDomainToEntity(user);
 
-        return userCrudRepository.save(entity)
+        return userCrudRepository
+                .save(entity)
                 .getId();
     }
 

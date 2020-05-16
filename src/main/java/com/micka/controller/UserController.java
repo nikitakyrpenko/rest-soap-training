@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -26,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping(path = "", produces = "application/json")
-    public ResponseEntity<Integer> saveUser(@RequestBody User user){
+    public ResponseEntity<Integer> saveUser(@RequestBody @Valid User user){
         Integer id = userService.save(user);
 
         return ResponseEntity
@@ -35,7 +37,7 @@ public class UserController {
     }
 
     @PutMapping(path = "", produces = "application/json")
-    public ResponseEntity<Integer> updateUser(@RequestBody User user){
+    public ResponseEntity<Integer> updateUser(@RequestBody @Valid User user){
         Integer id = userService.update(user);
 
         return ResponseEntity

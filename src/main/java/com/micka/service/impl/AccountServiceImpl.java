@@ -3,6 +3,7 @@ package com.micka.service.impl;
 import com.micka.dto.Account;
 import com.micka.entity.AccountEntity;
 import com.micka.entity.UserEntity;
+import com.micka.exception.RecordNotFoundException;
 import com.micka.repository.AccountCrudRepository;
 import com.micka.repository.UserCrudRepository;
 import com.micka.service.AccountService;
@@ -36,7 +37,7 @@ public class AccountServiceImpl implements AccountService {
 
         return accountCrudRepository.findById(id)
                 .map(mapper::mapEntityToDomain)
-                .orElseThrow();
+                .orElseThrow(() -> {throw new RecordNotFoundException("User with such id not found");});
     }
 
     @Override
@@ -47,7 +48,7 @@ public class AccountServiceImpl implements AccountService {
         AccountEntity entity = mapper.mapDomainToEntity(account);
         UserEntity holder = userCrudRepository
                 .findById(account.getUserId())
-                .orElseThrow();
+                .orElseThrow(() -> {throw new RecordNotFoundException("Account with such id not found");});
 
         entity.setUser(holder);
 
@@ -64,7 +65,7 @@ public class AccountServiceImpl implements AccountService {
         AccountEntity entity = mapper.mapDomainToEntity(account);
         UserEntity holder = userCrudRepository
                 .findById(account.getUserId())
-                .orElseThrow();
+                .orElseThrow(() -> {throw new RecordNotFoundException("Account with such id not found");});
 
         entity.setUser(holder);
 

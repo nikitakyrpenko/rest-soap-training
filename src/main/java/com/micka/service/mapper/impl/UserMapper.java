@@ -6,16 +6,17 @@ import com.micka.service.mapper.Mapper;
 import com.micka.utils.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 
 @Component
 public class UserMapper implements Mapper<User, UserEntity> {
 
-    private BCryptPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserMapper(BCryptPasswordEncoder passwordEncoder) {
+    public UserMapper(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 

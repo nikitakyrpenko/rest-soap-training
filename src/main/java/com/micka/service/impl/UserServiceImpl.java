@@ -41,7 +41,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         UserEntity entity = mapper.mapDomainToEntity(user);
 
-        return userCrudRepository.save(entity)
+        return userCrudRepository
+                .save(entity)
                 .getId();
     }
 

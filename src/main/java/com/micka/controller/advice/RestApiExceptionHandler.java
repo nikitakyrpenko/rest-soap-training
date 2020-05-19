@@ -1,4 +1,4 @@
-package com.micka.controller;
+package com.micka.controller.advice;
 
 import com.micka.exception.RecordNotFoundException;
 import com.micka.exception.error.ApiError;

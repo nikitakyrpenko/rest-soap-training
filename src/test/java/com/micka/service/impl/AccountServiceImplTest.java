@@ -13,6 +13,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -87,11 +91,22 @@ class AccountServiceImplTest {
     @Test
     void whenAccountServiceFindAllCorrectThenOK(){
         when(accountMapper.mapEntityToDomain(any(AccountEntity.class))).thenReturn(DOMAIN);
-        when(accountCrudRepository.findAll()).thenReturn(List.of(ENTITY,ENTITY));
+        when(accountCrudRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(List.of(ENTITY,ENTITY)));
 
-        accountService.findAll();
+        accountService.findAll(PageRequest.of(0,1));
 
-        verify(accountCrudRepository,times(1)).findAll();
+        verify(accountCrudRepository,times(1)).findAll(any(Pageable.class));
+        verify(accountMapper,atLeastOnce()).mapEntityToDomain(any(AccountEntity.class));
+    }
+
+    @Test
+    void whenAccountServiceFindAllByUserIdCorrectThenOk(){
+        when(accountMapper.mapEntityToDomain(any(AccountEntity.class))).thenReturn(DOMAIN);
+        when(accountCrudRepository.findAllByUserId(anyInt(), any(Pageable.class))).thenReturn(new PageImpl<>(List.of(ENTITY,ENTITY)));
+
+        accountService.findAllByUserId(1, PageRequest.of(0,1));
+
+        verify(accountCrudRepository,times(1)).findAllByUserId(anyInt(), any(Pageable.class));
         verify(accountMapper,atLeastOnce()).mapEntityToDomain(any(AccountEntity.class));
     }
 }

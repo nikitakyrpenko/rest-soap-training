@@ -1,5 +1,6 @@
 package com.micka.dto;
 
+
 public class Account {
 
     private Integer id;
@@ -37,5 +38,9 @@ public class Account {
 
     public Integer getUserId() {
         return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

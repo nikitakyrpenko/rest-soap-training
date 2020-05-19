@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("users")
 public class UserController {
 
     private final UserService userService;
@@ -20,37 +20,35 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
+    @GetMapping(path = "{id}", produces = "application/json")
     public ResponseEntity<User> findById(@PathVariable Integer id){
         return ResponseEntity
                 .status(HttpStatus.FOUND)
                 .body(userService.findById(id));
     }
 
-    @PostMapping(path = "", produces = "application/json")
+    @PostMapping(produces = "application/json")
     public ResponseEntity<Integer> saveUser(@RequestBody @Valid User user){
-        Integer id = userService.save(user);
 
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(id);
+                .body(userService.save(user));
     }
 
-    @PutMapping(path = "", produces = "application/json")
+    @PutMapping(produces = "application/json")
     public ResponseEntity<Integer> updateUser(@RequestBody @Valid User user){
-        Integer id = userService.update(user);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(id);
+                .body(userService.update(user));
     }
 
-    @DeleteMapping(path = "/{id}",produces = "application/json")
+    @DeleteMapping(path = "{id}",produces = "application/json")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id){
         userService.delete(id);
 
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(HttpStatus.NO_CONTENT)
                 .build();
     }
 }

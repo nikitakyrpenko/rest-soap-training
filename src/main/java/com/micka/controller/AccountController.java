@@ -3,13 +3,15 @@ package com.micka.controller;
 import com.micka.dto.Account;
 import com.micka.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
-@RequestMapping("/accounts")
+@RequestMapping("users/{userId}/accounts")
 public class AccountController {
 
     private final AccountService accountService;
@@ -19,29 +21,21 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @GetMapping(path = "", produces = "application/json")
-    public ResponseEntity<List<Account>> findAll(){
+    @GetMapping(produces = "application/json")
+    public ResponseEntity<Page<Account>> findAllByUserId(@PathVariable Integer userId,
+                                                 @RequestParam Integer page,
+                                                 @RequestParam Integer size,
+                                                 @RequestParam String sort){
+
         return ResponseEntity
                 .status(HttpStatus.FOUND)
-                .body(accountService.findAll());
+                .body(accountService.findAllByUserId(userId, PageRequest.of(page, size, Sort.by(sort))));
     }
 
-    @GetMapping(path = "/user/{id}", produces = "application/json")
-    public ResponseEntity<List<Account>> findAllByUserId(@PathVariable Integer id){
-        return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(accountService.findAllByUserId(id));
-    }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<Account> findById(@PathVariable Integer id){
-        return ResponseEntity
-                .status(HttpStatus.FOUND)
-                .body(accountService.findById(id));
-    }
-
-    @PostMapping(path = "", produces = "application/json")
-    public ResponseEntity<Integer> saveAccount(@RequestBody Account account){
+    @PostMapping(produces = "application/json")
+    public ResponseEntity<Integer> saveAccount(@PathVariable Integer userId, @RequestBody Account account){
+        account.setUserId(userId);
         Integer id = accountService.save(account);
 
         return ResponseEntity
@@ -49,8 +43,9 @@ public class AccountController {
                 .body(id);
     }
 
-    @PutMapping(path = "", produces = "application/json")
-    public ResponseEntity<Integer> updateAccount(@RequestBody Account account){
+    @PutMapping(produces = "application/json")
+    public ResponseEntity<Integer> updateAccount(@PathVariable Integer userId, @RequestBody Account account){
+        account.setUserId(userId);
         Integer id = accountService.update(account);
 
         return ResponseEntity
@@ -58,9 +53,9 @@ public class AccountController {
                 .body(id);
     }
 
-   @DeleteMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<Void> deleteById(@PathVariable Integer id){
-        accountService.delete(id);
+   @DeleteMapping(path = "{accountId}", produces = "application/json")
+    public ResponseEntity<Void> deleteById(@PathVariable Integer userId, @PathVariable Integer accountId){
+        accountService.delete(accountId);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

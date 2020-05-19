@@ -10,11 +10,10 @@ import com.micka.service.AccountService;
 import com.micka.service.mapper.Mapper;
 import com.micka.utils.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class AccountServiceImpl implements AccountService {
@@ -82,20 +81,16 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> findAll() {
-        return accountCrudRepository.findAll()
-                .stream()
-                .map(mapper::mapEntityToDomain)
-                .collect(Collectors.toUnmodifiableList());
+    public Page<Account> findAllByUserId(Integer id, Pageable pageable) {
+        return accountCrudRepository
+                .findAllByUserId(id, pageable)
+                .map(mapper::mapEntityToDomain);
     }
 
     @Override
-    public List<Account> findAllByUserId(Integer id) {
-        Utilities.checkForNull(id);
+    public Page<Account> findAll(Pageable pageable) {
+        return accountCrudRepository.findAll(pageable)
+                .map(mapper::mapEntityToDomain);
 
-        return accountCrudRepository.findAllByUserId(id)
-                .stream()
-                .map(mapper::mapEntityToDomain)
-                .collect(Collectors.toUnmodifiableList());
     }
 }

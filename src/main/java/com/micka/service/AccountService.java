@@ -1,7 +1,8 @@
 package com.micka.service;
 
 import com.micka.dto.Account;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface AccountService {
 
@@ -13,7 +14,8 @@ public interface AccountService {
 
     void delete(Integer id);
 
-    List<Account> findAll();
+    Page<Account> findAllByUserId(Integer id, Pageable pageable);
 
-    List<Account> findAllByUserId(Integer id);
+    Page<Account> findAll(Pageable pageable);
+
 }

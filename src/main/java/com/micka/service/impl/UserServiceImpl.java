@@ -8,10 +8,13 @@ import com.micka.service.UserService;
 import com.micka.service.mapper.Mapper;
 import com.micka.utils.Utilities;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserCrudRepository userCrudRepository;
     private final Mapper<User, UserEntity> mapper;
@@ -62,4 +65,11 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    @Override
+    public UserDetails loadUserByUsername(String username){
+        return userCrudRepository
+                .findByEmail(username)
+                .map(mapper::mapEntityToDomain)
+                .orElseThrow(() -> {throw new UsernameNotFoundException("User with such email does not exists");});
+    }
 }

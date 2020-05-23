@@ -95,7 +95,7 @@ class UserControllerTest {
 
         mockMvc.perform(delete("/users/{id}", 1))
                 .andDo(print())
-                .andExpect(status().is(200));
+                .andExpect(status().is(204));
 
         verify(userService,times(1)).delete(anyInt());
     }

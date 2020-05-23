@@ -1,9 +1,15 @@
 package com.micka.dto;
 
+import com.micka.utils.Role;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.Collection;
+import java.util.List;
 
-public class User {
+public class User implements UserDetails {
 
     private Integer id;
 
@@ -18,12 +24,15 @@ public class User {
     @Size(min = 2)
     private String password;
 
+    private Role role;
+
     private User(Builder builder){
         this.id = builder.id;
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
         this.email = builder.email;
         this.password = builder.password;
+        this.role = builder.role;
     }
 
     public User(){}
@@ -44,8 +53,42 @@ public class User {
         return email;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(role);
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     public static Builder builder(){
@@ -69,6 +112,7 @@ public class User {
         private String lastName;
         private String email;
         private String password;
+        private Role role;
 
         public Builder withId(Integer id){
             this.id = id;
@@ -92,6 +136,11 @@ public class User {
 
         public Builder withPassword(String password){
             this.password = password;
+            return this;
+        }
+
+        public Builder withRole(Role role){
+            this.role = role;
             return this;
         }
 

@@ -1,5 +1,7 @@
 package com.micka.entity;
 
+import com.micka.utils.Role;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -29,6 +31,9 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role")
+    private Role role;
 
     public UserEntity() {
     }
@@ -37,12 +42,13 @@ public class UserEntity {
         this.id = id;
     }
 
-    public UserEntity(Integer id, String firstName, String lastName, String email, String password) {
+    public UserEntity(Integer id, String firstName, String lastName, String email, String password, Role role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     public Integer getId() {
@@ -63,6 +69,10 @@ public class UserEntity {
 
     public String getPassword() {
         return password;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     @Override

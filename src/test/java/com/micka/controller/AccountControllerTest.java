@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -38,53 +40,32 @@ class AccountControllerTest {
                 .build();
     }
 
-    @Test
-    void whenFindByIdCorrectThen302() throws Exception {
-        when(accountService.findById(1)).thenReturn(DOMAIN);
 
-        mockMvc.perform(get("/accounts/{id}", 1)
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("utf-8"))
-                .andDo(print())
-                .andExpect(status().is(302));
-
-        verify(accountService,times(1)).findById(anyInt());
-    }
-
-    @Test
-    void whenFindAllCorrectThen302() throws Exception {
-        when(accountService.findAll()).thenReturn(List.of(DOMAIN,DOMAIN));
-
-        mockMvc.perform(get("/accounts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .characterEncoding("utf-8"))
-                .andDo(print())
-                .andExpect(status().is(302));
-
-        verify(accountService,times(1)).findAll();
-    }
 
     @Test
     void whenFindAllByUserIdThen302() throws Exception{
-        when(accountService.findAllByUserId(anyInt())).thenReturn(List.of(DOMAIN,DOMAIN));
+        when(accountService.findAllByUserId(anyInt(), any(Pageable.class))).thenReturn(new PageImpl<>(List.of(DOMAIN,DOMAIN)));
 
-        mockMvc.perform(get("/accounts/user/{id}",1)
+        mockMvc.perform(get("/users/{id}/accounts",1)
+                .param("page","0")
+                .param("size","1")
+                .param("sort","id")
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8"))
                 .andDo(print())
                 .andExpect(status().is(302));
 
-        verify(accountService,times(1)).findAllByUserId(anyInt());
+        verify(accountService,times(1)).findAllByUserId(anyInt(),any(Pageable.class));
     }
 
     @Test
     void whenSaveCorrectThen201() throws Exception{
         when(accountService.save(any(Account.class))).thenReturn(1);
 
-        mockMvc.perform(post("/accounts")
+        mockMvc.perform(post("/users/{id}/accounts",1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
-                .content("{ \"balance\": 1000, \"charge\": 0.3, \"userId\": 2 }")
+                .content("{ \"balance\": 1000, \"charge\": 0.3}")
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status()
@@ -97,24 +78,13 @@ class AccountControllerTest {
     void whenUpdateCorrectThen201() throws Exception{
         when(accountService.update(any(Account.class))).thenReturn(1);
 
-        mockMvc.perform(post("/accounts")
+        mockMvc.perform(post("/users/{id}/accounts",1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
-                .content("{ \"id\":3, \"balance\": 1000, \"charge\": 0.3, \"userId\": 2 }")
+                .content("{ \"id\":3, \"balance\": 1000, \"charge\": 0.3}")
                 .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status()
                         .is(201));
-    }
-
-    @Test
-    void whenDeleteThen302() throws Exception {
-        doNothing().when(accountService).delete(anyInt());
-
-        mockMvc.perform(delete("/accounts/{id}", 1))
-                .andDo(print())
-                .andExpect(status().is(200));
-
-        verify(accountService,times(1)).delete(anyInt());
     }
 }

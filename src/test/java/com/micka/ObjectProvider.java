@@ -4,6 +4,7 @@ import com.micka.dto.Account;
 import com.micka.dto.User;
 import com.micka.entity.AccountEntity;
 import com.micka.entity.UserEntity;
+import com.micka.utils.Role;
 
 public class ObjectProvider {
 
@@ -15,12 +16,13 @@ public class ObjectProvider {
                     .withLastName("bar")
                     .withEmail("foo@bar")
                     .withPassword("123")
+                    .withRole(Role.ROLE_CLIENT)
                     .build();
         }else if(klass == Account.class){
             return new Account(1, 100, 0.1,1 );
         }else if (klass == AccountEntity.class){
             return new AccountEntity(1, 100, 0.1, new UserEntity(1) );
         }
-        return new UserEntity(1, "foo", "bar", "foo@bar", "123");
+        return new UserEntity(1, "foo", "bar", "foo@bar", "123", Role.ROLE_CLIENT);
     }
 }
